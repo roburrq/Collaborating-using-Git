@@ -1,18 +1,18 @@
 import socket
 from machine import Pin
-
 led_pin = Pin(5, Pin.OUT)
 
 CONTENT = """\
 HTTP/1.0 200 OK
 Content-Type: text/html
-
 <html>
   <head>
   </head>
   <body>
     <p>Hello #%d from MicroPython!</p>
-    <a href="/toggle">Click here to toggle LED hooked to pin 5</a>
+    <a href="/redtoggle">Click here to toggle LED hooked to pin 5</a>
+    <a href="/greentoggle">Click here to toggle LED hooked to pin 3</a>
+    <a href="/bluetoggle">Click here to toggle LED hooked to pin 7</a>
   </body>
 </html>
 """
@@ -36,8 +36,12 @@ def main():
         req = stream.readline().decode("ascii")
         method, path, protocol = req.split(" ")
         print("Got", method, "request for", path)
-        if path == "/toggle":
-            led_pin.value(1-led_pin.value())
+        if path == "/redtoggle":
+            led_red.value(1-led_red.value())
+	elif path == "/greentoggle":
+            led_green.value(1-led_green.value())
+	else path == "/bluetoggle":
+            led_blue.value(1-led_blue.value())
         while True:
             h = stream.readline().decode("ascii").strip()
             if h == "":
